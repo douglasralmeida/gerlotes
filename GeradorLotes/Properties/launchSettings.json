@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "GeradorLotes (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "GeradorLotes (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

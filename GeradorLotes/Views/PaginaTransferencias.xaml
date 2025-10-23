@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="GeradorLotes.Views.PaginaTransferencias"
+    x:Name="View"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GeradorLotes.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:GeradorLotes.Models"
+    xmlns:vm="using:GeradorLotes.ViewModels"
+    mc:Ignorable="d">
+
+    <Grid Padding="20" RowDefinitions="Auto,Auto,Auto,*,Auto">
+        <!-- Título -->
+        <TextBlock Text="Transferências" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <!-- Unidade de Destino -->
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,10">
+            <TextBlock Text="Unidade de Destino:" Width="150"/>
+            <TextBox x:Name="UnidadeDestinoBox" Text="{Binding UnidadeDestino, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300" PlaceholderText="Informe o código da unidade de destino." MaxLength="8" />
+        </StackPanel>
+
+        <!-- Despacho -->
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,0,0,10">
+            <TextBlock Text="Despacho:" Width="150"/>
+            <TextBox x:Name="DespachoBox" Text="{Binding Despacho, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300" PlaceholderText="Informe o texto para despacho de transferência."/>
+        </StackPanel> 
+
+        <!-- Lista de Protocolos -->
+        <StackPanel Grid.Row="3">
+            <TextBlock Text="Protocolos:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+            <ListView ItemsSource="{x:Bind ViewModel.Protocolos}" SelectedItem="{x:Bind ViewModel.ProtocoloSelecionado, Mode=TwoWay}" Height="300" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Protocolo">
+                        <TextBlock Text="{x:Bind Numero}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Spacing="10">
+                <TextBox x:Name="ProtocoloBox" Text="{Binding ProtocoloDigitado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyDown="ProtocoloBox_KeyDown" VerticalAlignment="Center" Height="32" Width="200"/>
+                <AppBarButton Label="Adicionar" Icon="Add" Command="{x:Bind ViewModel.AdicionarCommand}" />
+                <AppBarButton Label="Excluir" Icon="Delete" Command="{x:Bind ViewModel.ExcluirCommand}" CommandParameter="{x:Bind ViewModel.ProtocoloSelecionado, Mode=OneWay}"/>
+                <AppBarButton Label="Colar" Icon="Paste" Command="{x:Bind ViewModel.ColarCommand}" />
+                <AppBarButton Label="Exportar" Icon="Save" Command="{x:Bind ViewModel.ExportarCommand}" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,0 +1,32 @@
+# Arquivos do Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build Results
+bin/
+obj/
+out/
+
+# Arquivos do NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Logs e temporários
+*.log
+*.tlog
+*.ide
+
+# Configurações locais
+*.local
+*.DS_Store
+
+# Arquivos gerados pelo sistema
+Thumbs.db
+desktop.ini
+
+# Arquivos de publicação
+publish/
