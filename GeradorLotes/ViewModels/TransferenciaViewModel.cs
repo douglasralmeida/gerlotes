@@ -1,5 +1,7 @@
 ﻿using GeradorLotes.Commands;
+using GeradorLotes.Helpers;
 using GeradorLotes.Models;
+using GeradorLotes.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,19 +9,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage.Pickers;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using WinRT.Interop;
-using GeradorLotes.Services;
 
 namespace GeradorLotes.ViewModels
 {
     public class TransferenciaViewModel: INotifyPropertyChanged
     {
         public ObservableCollection<Protocolo> Protocolos { get; } = new();
-
-        public event Action? ExportacaoConcluida;
 
         private string _despacho = string.Empty;
         public string Despacho
@@ -113,19 +111,19 @@ namespace GeradorLotes.ViewModels
 
         private async Task ColarDaAreaDeTransferencia()
         {
-            var content = Clipboard.GetContent();
-            if (content.Contains(StandardDataFormats.Text))
+            var texto = await ClipboardHelper.ObterTextoAsync();
+            if (!string.IsNullOrWhiteSpace(texto))
             {
-                var texto = await content.GetTextAsync();
-                if (!string.IsNullOrWhiteSpace(texto))
+                var linhas = texto.Split(new[] { '\r', '\n', ';', ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var linha in linhas)
                 {
-                    var numeros = texto
-                        .Split(new[] { '\r', '\n', ';', ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                        .Select(n => n.Trim());
-
-                    int adicionados = Importar(numeros);
-                    System.Diagnostics.Debug.WriteLine($"{adicionados} protocolos colados da área de transferência.");
+                    var protocolo = linha.Trim();
+                    if (!string.IsNullOrWhiteSpace(protocolo) && !Protocolos.Any(p => p.Numero == protocolo))
+                    {
+                        Protocolos.Add(new Protocolo(protocolo));
+                    }
                 }
+                ExportarCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -144,18 +142,8 @@ namespace GeradorLotes.ViewModels
             StorageFile file = await picker.PickSaveFileAsync();
             if (file != null)
             {
-                var linhas = new List<string>
-                {
-                    "12",
-                    "Protocolo;UO;Despacho"
-                };
-
-                foreach (var protocolo in Protocolos)
-                {
-                    linhas.Add($"{protocolo.Numero};{UnidadeDestino};{Despacho}");
-                }
-
-                await FileIO.WriteLinesAsync(file, linhas);
+                var lista = Protocolos.Select(p => p.Numero);
+                await CsvExporter.ExportAsync(file, lista, UnidadeDestino, Despacho);
 
                 MessageService.Instance.Show(
                     "Exportação concluída",
