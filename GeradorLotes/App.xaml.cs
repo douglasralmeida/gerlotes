@@ -35,6 +35,16 @@ namespace GeradorLotes
         public App()
         {
             InitializeComponent();
+
+            this.UnhandledException += (sender, e) =>
+            {
+                var ex = e.Exception;
+                var mensagem = $"Erro não tratado: {ex?.GetType().Name} - {ex?.Message}\n{ex?.StackTrace}";
+                System.Diagnostics.Debug.WriteLine(mensagem);
+
+                e.Handled = true; // evita que o app feche
+            };
+
         }
 
         /// <summary>
