@@ -15,6 +15,13 @@
         <!-- Título -->
         <TextBlock Text="Transferências" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
 
+        <!-- Msg Sucesso -->
+        <InfoBar x:Name="ExportInfoBar"
+                 IsOpen="False"
+                 Severity="Informational"
+                 HorizontalAlignment="Stretch"
+                 Margin="0,0,0,10"/>
+
         <!-- Unidade de Destino -->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,10">
             <TextBlock Text="Unidade de Destino:" Width="150"/>

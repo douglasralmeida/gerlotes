@@ -11,12 +11,15 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using WinRT.Interop;
+using GeradorLotes.Services;
 
 namespace GeradorLotes.ViewModels
 {
     public class TransferenciaViewModel: INotifyPropertyChanged
     {
         public ObservableCollection<Protocolo> Protocolos { get; } = new();
+
+        public event Action? ExportacaoConcluida;
 
         private string _despacho = string.Empty;
         public string Despacho
@@ -142,10 +145,10 @@ namespace GeradorLotes.ViewModels
             if (file != null)
             {
                 var linhas = new List<string>
-        {
-            "12",
-            "Protocolo;UO;Despacho"
-        };
+                {
+                    "12",
+                    "Protocolo;UO;Despacho"
+                };
 
                 foreach (var protocolo in Protocolos)
                 {
@@ -153,6 +156,11 @@ namespace GeradorLotes.ViewModels
                 }
 
                 await FileIO.WriteLinesAsync(file, linhas);
+
+                MessageService.Instance.Show(
+                    "Exportação concluída",
+                    "O arquivo CSV foi gerado com sucesso.",
+                    MessageService.MessageSeverity.Success);
             }
         }
 
