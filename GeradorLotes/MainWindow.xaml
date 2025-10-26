@@ -14,7 +14,48 @@
     </Window.SystemBackdrop>
 
     <Grid>
-        <NavigationView x:Name="nvPadrao" Loaded="OnNavigationViewControlLoaded" SelectionChanged="OnNavigationViewSelectionChanged">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!--  TitleBar  -->
+            <RowDefinition Height="*" />
+            <!--  NavigationView  -->
+        </Grid.RowDefinitions>
+
+        <TitleBar
+            x:Name="TitleBar"
+            BackRequested="TitleBar_BackRequested"
+            IsBackButtonVisible="{x:Bind quadroRaiz.CanGoBack, Mode=OneWay}"
+            IsPaneToggleButtonVisible="True"
+            PaneToggleRequested="TitleBar_PaneToggleRequested"
+            Title="Gerador de Lotes de Tarefas"
+            Subtitle="VERSÃO EM DESENVOLVIMENTO">
+
+            <TitleBar.LeftHeader>
+                <ImageIcon
+                    Height="16"
+                    Margin="8,0,8,0"
+                    Source="/Assets/AppIcon.ico" />
+            </TitleBar.LeftHeader>
+
+            <TitleBar.Content>
+                <AutoSuggestBox
+                    Width="320"
+                    VerticalAlignment="Center"
+                    PlaceholderText="Pesquisar.."
+                    QueryIcon="Find" />
+            </TitleBar.Content>
+
+        </TitleBar>
+
+        <NavigationView 
+            x:Name="NavigationViewPadrao" 
+            Grid.Row="1" 
+            IsBackButtonVisible="Collapsed"
+            IsPaneToggleButtonVisible="False"
+            IsSettingsVisible="False"  
+            Loaded="OnNavigationViewControlLoaded" 
+            SelectionChanged="OnNavigationViewSelectionChanged">
+            
             <Frame x:Name="quadroRaiz" />
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="TransferenciasItem" Content="Transferencias" Tag="GeradorLotes.Views.PaginaTransferencias" />
