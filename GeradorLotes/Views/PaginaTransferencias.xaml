@@ -13,45 +13,83 @@
 
     <Grid Padding="20" RowDefinitions="Auto,Auto,Auto,*,Auto">
         <!-- Título -->
-        <TextBlock Text="Transferências" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+        <TextBlock 
+            FontSize="24"
+            FontWeight="Bold"
+            Margin="0,0,0,20"
+            Text="Lote de Transferências" />
 
         <!-- Msg Sucesso -->
         <InfoBar x:Name="ExportInfoBar"
                  IsOpen="False"
                  Severity="Informational"
                  HorizontalAlignment="Stretch"
-                 Margin="0,0,0,10"
-                 />
+                 Margin="0,0,0,10" />
 
-        <!-- Unidade de Destino -->
+        <!-- Unidade de destino -->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,10">
-            <TextBlock Text="Unidade de Destino:" Width="150"/>
-            <TextBox x:Name="UnidadeDestinoBox" Text="{Binding UnidadeDestino, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300" PlaceholderText="Informe o código da unidade de destino." MaxLength="8" />
+            <TextBox 
+                x:Name="UnidadeDestinoBox"
+                Header="Unidade de Destino:"
+                MaxLength="10"
+                PlaceholderText="Informe o código da unidade de destino"
+                Text="{Binding UnidadeDestino, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Width="320" />
         </StackPanel>
 
         <!-- Despacho -->
         <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,0,0,10">
-            <TextBlock Text="Despacho:" Width="150"/>
-            <TextBox x:Name="DespachoBox" Text="{Binding Despacho, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300" PlaceholderText="Informe o texto para despacho de transferência."/>
+            <TextBox 
+                x:Name="DespachoBox"
+                Header="Despacho:"
+                PlaceholderText="Informe o texto para despacho de transferência"
+                Text="{Binding Despacho, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Width="320" />
         </StackPanel> 
 
-        <!-- Lista de Protocolos -->
+        <!-- Lista de protocolos -->
         <StackPanel Grid.Row="3">
-            <TextBlock Text="Protocolos:" FontWeight="SemiBold" Margin="0,0,0,5"/>
-            <ListView ItemsSource="{x:Bind ViewModel.Protocolos}" SelectedItem="{x:Bind ViewModel.ProtocoloSelecionado, Mode=TwoWay}" Height="300" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <TextBlock Text="Lote de Protocolos:" FontWeight="SemiBold" Margin="0,0,0,5" />
+            <ListView 
+                Height="300"
+                ItemsSource="{x:Bind ViewModel.Protocolos}"
+                SelectedItem="{x:Bind ViewModel.ProtocoloSelecionado, Mode=TwoWay}"
+                ScrollViewer.VerticalScrollBarVisibility="Auto">
+                
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:Protocolo">
-                        <TextBlock Text="{x:Bind Numero}"/>
+                        <TextBlock Text="{x:Bind Numero}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
+            <!-- Painel de adicionar protocolo -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Spacing="10">
-                <TextBox x:Name="ProtocoloBox" Text="{Binding ProtocoloDigitado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyDown="ProtocoloBox_KeyDown" VerticalAlignment="Center" Height="32" Width="200"/>
-                <AppBarButton Label="Adicionar" Icon="Add" Command="{x:Bind ViewModel.AdicionarCommand}" />
-                <AppBarButton Label="Excluir" Icon="Delete" Command="{x:Bind ViewModel.ExcluirCommand}" CommandParameter="{x:Bind ViewModel.ProtocoloSelecionado, Mode=OneWay}"/>
-                <AppBarButton Label="Colar" Icon="Paste" Command="{x:Bind ViewModel.ColarCommand}" />
-                <AppBarButton Label="Exportar" Icon="Save" Command="{x:Bind ViewModel.ExportarCommand}" />
+                <TextBox 
+                    x:Name="ProtocoloBox" 
+                    Height="32"
+                    KeyDown="ProtocoloBox_KeyDown" 
+                    PlaceholderText="Informe um protocolo para adicionar"
+                    Text="{Binding ProtocoloDigitado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Center"
+                    Width="250" />
+                <AppBarButton                  
+                    Command="{x:Bind ViewModel.AdicionarCommand}"
+                    Icon="Add"
+                    Label="Adicionar" />
+                <AppBarButton 
+                    Command="{x:Bind ViewModel.ExcluirCommand}"
+                    CommandParameter="{x:Bind ViewModel.ProtocoloSelecionado, Mode=OneWay}"
+                    Icon="Delete"
+                    Label="Excluir" />
+                <AppBarButton
+                    Command="{x:Bind ViewModel.ColarCommand}"
+                    Icon="Paste"
+                    Label="Colar" />
+                <AppBarButton
+                    Command="{x:Bind ViewModel.ExportarCommand}"
+                    Icon="Save"
+                    Label="Exportar" />
             </StackPanel>
         </StackPanel>
     </Grid>

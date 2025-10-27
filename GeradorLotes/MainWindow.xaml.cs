@@ -24,7 +24,7 @@ namespace GeradorLotes
             AppWindow.TitleBar.PreferredHeightOption = Microsoft.UI.Windowing.TitleBarHeightOption.Tall;
             SetTitleBar(TitleBar); // Set the custom title bar
 
-            AppWindow.Resize(new Windows.Graphics.SizeInt32(1100, 610));
+            AppWindow.Resize(new Windows.Graphics.SizeInt32(1100, 660));
 
             var hwnd = WindowNative.GetWindowHandle(this);
             Microsoft.UI.WindowId windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
